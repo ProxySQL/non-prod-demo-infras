@@ -31,7 +31,7 @@ pgsql_variables=
 	# Interface to be used for serving traffic
 	interfaces="0.0.0.0:6133"
 	# Server version that `ProxySQL` will advertise to the client
-	server_version="16.1"
+	server_version="17.0"
 	# Timeout to use when creating backend server connections
 	connect_timeout_server=3000
 	# History to be retained for Monitoring purposes on 'monitor' schema tables
