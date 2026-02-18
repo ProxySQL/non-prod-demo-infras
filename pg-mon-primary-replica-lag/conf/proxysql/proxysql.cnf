@@ -1,0 +1,80 @@
+# Location to store the database file, logs and generated data.
+# datadir="$PATH"
+
+mysql-monitor=false
+pgsql-monitor=true
+
+mysql-workers=false
+pgsql-workers=true
+
+mysql-admin=true
+pgsql-admin=false
+
+# Administration variables
+admin_variables=
+{
+	# Credentials to logging to `ProxySQL` Admin CLI Interface - https://proxysql.com/documentation/the-admin-schemas/.
+	# IMPORTANT: Remember that default 'admin:admin' credentials can only be used from localhost. These are
+	# sample defaults and should be changed for your configuration.
+	admin_credentials="admin:admin;radmin:radmin"
+	# Port for accessing Admin interface using MySQL Protocol
+	mysql_ifaces="0.0.0.0:6032"
+	# Port for accessing Admin interface using `PostgreSQL` Protocol
+	pgsql_ifaces="0.0.0.0:6132"
+}
+
+pgsql_variables=
+{
+	# Number of threads used to serve traffic
+	threads=2
+	# Maximum global number of client connections for `PostgreSQL` interface
+	max_connections=2048
+	# A defaultly imposed query delay
+	default_query_delay=0
+	# The default query timeout for backend queries
+	default_query_timeout=36000000
+	# Retries to perform when failing to create a connection for serving traffic
+	connect_retries_on_failure=10
+	# Minimal timeout used to detect incoming/outgoing traffic via the `poll` syscall
+	poll_timeout=2000
+	# Interface to be used for serving traffic
+	interfaces="0.0.0.0:6133"
+	# Server version that `ProxySQL` will advertise to the client
+	server_version="17.0"
+	# Timeout to use when creating backend server connections
+	connect_timeout_server=3000
+	# History to be retained for Monitoring purposes on 'monitor' schema tables
+	monitor_history=600000
+	# Interval used for Monitor Connect checks
+	monitor_connect_interval=60000
+	# Timeout used for Monitor Connect checks
+	monitor_connect_timeout=600
+	# Interval used for Monitor Ping checks
+	monitor_ping_interval=8000
+	# Timeout used for Monitor Ping checks
+	ping_timeout_server=1000
+	# Create stats about the received commands - https://proxysql.com/documentation/stats-statistics/#stats_mysql_commands_counters
+	commands_stats=true
+	# Required to be set at startup. Current limitation on Monitor conn-pool.
+	monitor_dbname="proxymondb"
+}
+
+mysql_replication_hostgroups=
+(
+	{
+		writer_hostgroup=0, reader_hostgroup=1, check_type="innodb_read_only", comment="mysql"
+	},
+	{
+		writer_hostgroup=10, reader_hostgroup=11, check_type="super_read_only", comment="mysql"
+	}
+)
+
+pgsql_replication_hostgroups=
+(
+	{
+		writer_hostgroup=0, reader_hostgroup=1, check_type="read_only", comment=""
+	},
+	{
+		writer_hostgroup=10, reader_hostgroup=11, check_type="read_only", comment="pgsql"
+	}
+)
