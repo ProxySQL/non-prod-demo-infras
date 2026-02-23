@@ -27,8 +27,8 @@ docker-compose down -v
 Setup ProxySQL config and PostgreSQL conf:
 
 ```bash
-./tests_configs/test_0-postgre_conf.sh
-./tests_configs/test_0-proxysql_conf.sh
+./manual_tests_configs/test_0-postgre_conf.sh
+./manual_tests_configs/test_0-proxysql_conf.sh
 ```
 
 Insert test data to trigger replication lag (this creates 10MB of data in rows):
@@ -74,7 +74,7 @@ LOAD PGSQL VARIABLES TO RUNTIME;
 Or use the configuration provided in `test_1-proxysql_conf.sh`:
 
 ```bash
-./tests_configs/test_1-proxysql_conf.sh
+./manual_tests_configs/test_1-proxysql_conf.sh
 ```
 
 ```proxysql.log
